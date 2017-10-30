@@ -274,4 +274,29 @@ defmodule ExMatrix do
     end)
   end
 
+  @doc """
+  Element-wise divides two matrices of the same dimensions, returning a new matrix of the
+  same dimensions.  If two non-matching matrices are provided an ArgumentError
+  will be raised.
+  """
+  @spec ediv([[number]], [[number]]) :: [[number]]
+  def ediv(matrix_a, matrix_b) do
+    case size(matrix_a) == size(matrix_b) do
+      false -> raise ArgumentError, message: "Cannot element-wise div matrices of different dimensions"
+      _ -> nil
+    end
+
+    Stream.zip(matrix_a, matrix_b)
+    |> Enum.map(fn({a,b})-> div_rows(a, b) end)
+  end
+
+  @doc """
+  Divides two rows to return a new row
+  """
+  @spec div_rows([number], [number]) :: [number]
+  def div_rows(row_a, row_b) do
+    Stream.zip(row_a, row_b)
+    |> Enum.map(fn({x, y}) -> x / y end)
+  end
+
 end
