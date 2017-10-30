@@ -298,5 +298,15 @@ defmodule ExMatrix do
     Stream.zip(row_a, row_b)
     |> Enum.map(fn({x, y}) -> x / y end)
   end
+  
+  @doc """
+  Element-wise multiply a matrix and a number, returning a new matrix of the
+  same dimensions.
+  """
+  @spec emul([[number]], number) :: [[number]]
+  def emul(matrix_a, number) when is_number(number) do
+    matrix_a
+    |> Enum.map(fn(r) -> r |> Enum.map(fn(x) -> x * number end) end)
+  end
 
 end

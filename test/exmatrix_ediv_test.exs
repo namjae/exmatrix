@@ -9,7 +9,7 @@ defmodule ExMatrixEdivTest do
 
   test "test element-wise div of mis-matched matrices" do
     assert_raise ArgumentError, fn ->
-      subtract([[0]], [[1,1]])
+      ediv([[0]], [[1,1]])
     end
   end
 
