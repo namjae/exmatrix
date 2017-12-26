@@ -4,14 +4,14 @@ defmodule ExMatrix.Mixfile do
   def project do
     [app: :exmatrix,
      version: "0.0.1",
-     description: description,
+     description: description(),
      elixir: "~> 1.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      name: "ExMatrix",
      source_url: "https://github.com/a115/exmatrix",
-     deps: deps,
-     package: package]
+     deps: deps(),
+     package: package()]
   end
 
   def application do

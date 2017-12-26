@@ -26,7 +26,7 @@ defmodule ExMatrix do
   """
   @spec new_matrix(number, number) :: [[number]]
   def new_matrix(rows, cols) do
-    for n <- 1 .. rows, do: generate_zero_filled_row(cols)
+    for _n <- 1 .. rows, do: generate_zero_filled_row(cols)
   end
 
 
@@ -220,7 +220,7 @@ defmodule ExMatrix do
       |> Enum.map(fn {row, col_item} -> List.insert_at(row, -1, col_item) end)
   end
 
-  """
+  @doc """
   Generates an Identity Matrix with 'size' rows and columns
   """
   @spec identity_matrix(integer) :: [[number]]
@@ -234,26 +234,22 @@ defmodule ExMatrix do
     _identity(size, pos + 1, matrix |> List.insert_at(-1, row))
   end
 
-  """
-  Generates a zero-filled list of ```size``` elements, primarily used
-  by the default new_matrix function.
-  """
+  # Generates a zero-filled list of ```size``` elements, primarily used
+  # by the default new_matrix function.
   @spec generate_zero_filled_row(integer) :: [number]
   defp generate_zero_filled_row(size) do
-    Enum.map(:lists.seq(1, size), fn(x)-> 0 end)
+    Enum.map(:lists.seq(1, size), fn(_x)-> 0 end)
   end
 
-  """
-  Perform a parallel map by calling the function against each element
-  in a new process.
-  """
+  # Perform a parallel map by calling the function against each element
+  # in a new process.
   @spec pmap([number], fun) :: [number]
   defp pmap(collection, function) do
-    me = self
+    me = self()
 
     collection
     |> Enum.map(fn (elem) ->
-      spawn_link fn -> (send me, { self, function.(elem) }) end
+      spawn_link fn -> (send me, { self(), function.(elem) }) end
     end)
     |> Enum.map(fn (pid) ->
       receive do { ^pid, result } -> result end
@@ -261,16 +257,16 @@ defmodule ExMatrix do
   end
 
 
-  """
+  @doc """
   Generates a random matrix just so we can test large matrices
   """
   @spec random_cells(integer, integer, integer) :: [[number]]
   def random_cells(rows, cols, max) do
-    :random.seed()
+    :rand.seed(:exsplus)
 
     Enum.map(:lists.seq(1, rows), fn(_)->
       :lists.seq(1, cols)
-      |> Enum.map(fn(_)-> :random.uniform(max) end)
+      |> Enum.map(fn(_)-> :rand.uniform(max) end)
     end)
   end
 
